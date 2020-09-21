@@ -1,0 +1,1 @@
+pyinstaller snake.py --onefile --noconsole
