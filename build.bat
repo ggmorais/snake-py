@@ -1,1 +1,1 @@
-pyinstaller snake.py --onefile --noconsole
+pyinstaller snake.py --onefile --noconsole --icon=assets/snake-ico.ico
