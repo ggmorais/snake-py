@@ -39,11 +39,14 @@ class Snake:
 
     def update(self, direction):
         nx, ny = self.parts[0].x, self.parts[0].y
+        mx, my = 0, 0
 
         if direction == 'right':
             nx += self.speed
+            # mx = -(self.size[0] - self.speed)
         elif direction == 'left':
             nx -= self.speed
+            # mx = + (self.size[0])
         elif direction == 'up':
             ny -= self.speed
         elif direction == 'down':
@@ -86,23 +89,24 @@ class Game:
         self.window_size = (w, h)
         self.display = pg.display.set_mode(self.window_size)
         self.clock = pg.time.Clock()
-        
+        self.object_size = (self.window_size[0] / 40, self.window_size[1] / 30)
+
         pg.display.set_caption('Snake game')
 
-        self.fps = 20
+        self.fps = 15
 
         self.food_color = Colors.red
         self.foods = []
-        self.food_timeout = 10
 
         self.dir = None
 
-        self.player = Snake(self, (8, 8), (8, 8), 8)
+        print(self.object_size)
+
+        self.player = Snake(self, self.object_size, self.object_size, self.object_size[0])
 
         self.loop()
     
     def on_keydown(self, key):
-
         if key == pg.K_RIGHT and self.dir != 'left':
             self.dir = 'right'
         if key == pg.K_LEFT and self.dir != 'right':
@@ -117,10 +121,10 @@ class Game:
 
     def drop_food(self):
         if len(self.foods) == 0:
-            posx = random.randint(2, (self.window_size[0] - 16) / 8)
-            posy = random.randint(2, (self.window_size[1] - 16) / 8)
+            posx = random.randint(2, (self.window_size[0] - self.object_size[0] * 2) / self.object_size[0])
+            posy = random.randint(2, (self.window_size[1] - self.object_size[1] * 2) / self.object_size[1])
 
-            food = pg.Rect((posx * 8, posy * 8), (8, 8))
+            food = pg.Rect((posx * self.object_size[0], posy * self.object_size[1]), self.object_size)
             self.foods.append(food)
 
         for food in self.foods:
